@@ -7,6 +7,8 @@ import { choice, createCanvas } from "./helper";
 import { Sun } from "./bodies/sun";
 import { Earth } from "./bodies/earth";
 import { Moon } from "./bodies/moon";
+import { Mercury } from "./bodies/mercury";
+import { Venus } from "./bodies/venus";
 // import { Loader } from "./loader";
 // import { Sphere } from "./player/player";
 
@@ -50,13 +52,17 @@ class App {
 
         // The sun light and animation
         const sun = new Sun(this._scene);
-        sun.light.parent = camera;
+        const mercury = new Mercury(this._scene);
+        mercury.orbit(4.6, sun);
+
+        const venus = new Venus(this._scene)
+        venus.orbit(7.2, sun);
 
         const earth = new Earth(this._scene);
-        earth.orbit(10, sun)
+        earth.orbit(12.5, sun)
 
         const moon = new Moon(this._scene);
-        moon.orbit(5, earth)
+        moon.orbit(2, earth)
 
         // Physics
         // this._scene.gravity = new Vector3(0, -0.9, 0);

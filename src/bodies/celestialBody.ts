@@ -2,8 +2,11 @@ import { Mesh, MeshBuilder, Scene, Vector3, Animation, Quaternion, AnimationGrou
 import { createCircle } from "../helper"
 
 export class CelestialBody {
-    public mesh: Mesh
-    private _scene: Scene
+    public mesh: Mesh;
+    private _scene: Scene;
+
+    // Internal helper functions
+    protected _getSemiMinor = (a: number, e: number) => a * Math.sqrt(1 - e * e)
 
     constructor(name: string, radius: number, position: Vector3, scene: Scene) {
         const body = MeshBuilder.CreateSphere(name, { diameter: 2 * radius }, scene)
@@ -13,18 +16,18 @@ export class CelestialBody {
     }
 
     /**
-     * Make an animation of this object spinning around another. 
+     * Make an animation of this object spinning around another.
      * @param relDistance - The relative distance between the static body and the orbiting one
      * @param otherBody - A larger mass celestial body for this one to orbit around
      */
     public orbit(relDistance: number, otherBody: CelestialBody, isClockwise = true) {
         this.mesh.parent = otherBody.mesh;
-        this.mesh.position = new Vector3(relDistance, 0, 0);
-        
+        this.mesh.position = new Vector3(0, 0, relDistance);
+
         const animFrameRate = 30; //per sec
         const animTime = 5; //secs
         const nbFrames = animTime * animFrameRate - 1;
-        const randAxis = new Vector3(0, 0, relDistance);
+        const randAxis = new Vector3(0, relDistance, 0);
 
         const animationRotation = new Animation(
             this.mesh.name + "-orbit-" + otherBody.mesh.name,
@@ -49,10 +52,9 @@ export class CelestialBody {
             frame: 2 * nbFrames,
             value: Quaternion.RotationAxis(randAxis, isClockwise ? 0 : Math.PI * 2)
         });
-        
+
         // Adding orbit line going through this orbit
         const orbit = createCircle(this.mesh.name + '-orbital', otherBody.mesh.position, relDistance, this._scene)
-        orbit.rotation.x = Math.PI / 2;
         orbit.parent = otherBody.mesh.parent;
 
         //Adding keys to the animation object

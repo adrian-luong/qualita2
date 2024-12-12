@@ -18,7 +18,7 @@ export function createCanvas() {
  * A similar function to that in Python, where a random value of an array is returned every call
  * @param array - whichever desired array
  * @param T - a generic, for the sake of typing
- * @returns 
+ * @returns
  */
 export function choice<T>(array: T[]) {
     const i = Math.floor(Math.random() * array.length);
@@ -26,7 +26,7 @@ export function choice<T>(array: T[]) {
 }
 
 /**
- * Create a circle from a center point (X, Y, Z) with a radius
+ * Create a circle from a center point (a,b) with a radius
  * @param name - the circle's name
  * @param center - its center, as a Vector3 position
  * @param radius - its radius
@@ -37,6 +37,23 @@ export function createCircle(name: string, center: Vector3, radius: number, scen
     const arcPoints: Vector3[] = [];
     for (var i = -Math.PI; i <= Math.PI; i += Math.PI / 360) {
         arcPoints.push(new Vector3(center.x + radius * Math.cos(i), center.y, center.z + radius * Math.sin(i)));
+    }
+    return MeshBuilder.CreateLines(name, { points: arcPoints }, scene);
+}
+
+/**
+ * Create an ellipse from a center point (a,b) with a radius
+ * @param name - the ellipse's name
+ * @param center - its center, as a Vector3 position
+ * @param semiMajor - its semi-major radius
+ * @param semiMinor - its semi-minor radius
+ * @param scene - the scene for it to display
+ * @returns a Mesh
+ */
+export function createEllipse(name: string, center: Vector3, semiMajor: number, semiMinor: number, scene: Scene) {
+    const arcPoints: Vector3[] = [];
+    for (var i = -Math.PI; i <= Math.PI; i += Math.PI / 360) {
+        arcPoints.push(new Vector3(center.x + semiMajor * Math.cos(i), center.y, center.z + semiMinor * Math.sin(i)));
     }
     return MeshBuilder.CreateLines(name, { points: arcPoints }, scene);
 }
