@@ -1,16 +1,19 @@
-import { Color3, HemisphericLight, PointLight, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
+import { Color3, PointLight, Scene, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
+import { CelestialBody } from "./celestialBody";
 
-export class Sun {
-    // public light: PointLight;
+export class Sun extends CelestialBody {
+    public light: PointLight;
 
     constructor(scene: Scene) {
-        const light = new HemisphericLight('sunlight', new Vector3(1, 1, 0), scene)
-        const yellow = new Color3(1, 0.875, 0.133)
-        light.diffuse = yellow
+        super('sun', 2, Vector3.Zero(), scene)
 
-        // super('sun', 1, sunPos, scene)
-        // const composition = new StandardMaterial('sun-material', scene)
-        // composition.diffuseColor = yellow;
-        // this.mesh.material = composition
+        const light = new PointLight("sun-light", Vector3.Zero(), scene);
+        light.diffuse = new Color3(1, 1, 1);
+        this.light = light;
+
+        // const mat = new StandardMaterial('sun-texture', scene)
+        // mat.diffuseTexture = new Texture('textures/sun.png', scene)
+
+        // this.mesh.material = mat;
     }
 }

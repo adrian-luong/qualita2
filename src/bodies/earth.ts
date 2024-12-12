@@ -1,11 +1,12 @@
-import { MeshBuilder, Scene, Vector3 } from "@babylonjs/core";
+import { Scene, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
+import { CelestialBody } from "./celestialBody";
 
-export class Earth {
-    // public light: PointLight;
-
+export class Earth extends CelestialBody {
     constructor(scene: Scene) {
-        const body = MeshBuilder.CreateSphere('earth', {}, scene)
-        body.position = new Vector3(1, 0, 0)
-        // this.mesh = body
+        super('earth', 1, new Vector3(12.5, 0, 0), scene)
+
+        const mat = new StandardMaterial("earth-texture");
+        mat.diffuseTexture = new Texture("textures/earth.jpg", scene);
+        this.mesh.material = mat;
     }
 }
